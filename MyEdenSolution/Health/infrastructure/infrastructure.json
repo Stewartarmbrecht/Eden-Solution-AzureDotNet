@@ -1,0 +1,140 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "instanceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provides a unique string that will be pre-pended to all resource names and will ensure that they are globally unique."
+            }
+        }
+    },
+    "variables": {
+        "serviceInstanceName": "[concat(parameters('instanceName'),'-health')]",
+
+        "applicationInsightsName": "[concat(variables('serviceInstanceName'), '-ai')]",
+
+        "functionsAppServicePlanName": "[concat(variables('serviceInstanceName'),'-asp')]",
+        "functionsAppName": "[variables('serviceInstanceName')]",
+
+        "storageAccountName": "[concat(parameters('instanceName'),'hltwjs')]"
+    },
+    "resources": [
+        { "type": "Microsoft.Insights/components",
+            "name": "[variables('applicationInsightsName')]",
+            "comments": "The application insights instance to use to monitor all resources in the resource group.",
+            "apiVersion": "2014-04-01",
+            "location": "[resourceGroup().location]",
+            "kind": "other",
+            "properties": {
+                "applicationId": "[variables('applicationInsightsName')]"
+            }
+        },
+        { "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2019-04-01",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        },
+        { "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('functionsAppServicePlanName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-09-01",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        { "type": "Microsoft.Web/sites",
+            "name": "[variables('functionsAppName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2018-11-01",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]",
+                "reserved": false
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "name": "appsettings",
+                    "type": "config",
+                    "apiVersion": "2018-11-01",
+                    "properties": {
+                        "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                    ]
+                },
+                {
+                    "apiVersion": "2018-11-01",
+                    "name": "slotConfigNames",
+                    "type": "config",
+                    "dependsOn": [
+                      "[resourceId('Microsoft.Web/Sites', variables('functionsAppName'))]"
+                    ],
+                    "properties": {
+                      "appSettingNames": [ "APPINSIGHTS_INSTRUMENTATIONKEY" ]
+                    }
+                }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]"
+            ]
+        },
+        { "type": "Microsoft.Web/sites/slots",
+            "name": "[concat(variables('functionsAppName'), '/staging')]",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]",
+                "reserved": false
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "name": "appsettings",
+                    "type": "config",
+                    "apiVersion": "2018-11-01",
+                    "properties": {
+                        "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]",
+                        "[resourceId('Microsoft.Web/sites/slots', variables('functionsAppName'), 'staging')]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                    ]
+                }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "uniqueResourcesystemName": {
+            "type": "string"
+        },
+        "publicUrlToLocalWebServer": {
+            "type": "string"
+        },
+        "uniqueDeveloperId": {
+            "type": "string"
+        },
+        "expireTimeUtc": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "eventGridTopicName": "[concat(parameters('uniqueResourcesystemName'),'-events-topic')]",
+        "eventGridFunctionSubscriptions": [
+            {
+                "resourceName": "[concat(parameters('uniqueDeveloperId'),'CategoryUpdateCategorySynonyms')]",
+                "webHookUrl": "[concat(parameters('publicUrlToLocalWebServer'),'/api/UpdateCategorySynonyms')]",
+                "eventTypes": [
+                    "CategoryCreated",
+                    "CategoryNameUpdated"
+                ]
+            },
+            {
+                "resourceName": "[concat(parameters('uniqueDeveloperId'),'CategoryAddCategoryImage')]",
+                "webHookUrl": "[concat(parameters('publicUrlToLocalWebServer'),'/api/AddCategoryImage')]",
+                "eventTypes": [
+                    "CategoryCreated",
+                    "CategoryNameUpdated"
+                ]
+            },
+            {
+                "resourceName": "[concat(parameters('uniqueDeveloperId'),'CategoryAddCategoryItem')]",
+                "webHookUrl": "[concat(parameters('publicUrlToLocalWebServer'),'/api/AddCategoryItem')]",
+                "eventTypes": [
+                    "AudioCreated",
+                    "ImageCreated",
+                    "TextCreated"
+                ]
+            },
+            {
+                "resourceName": "[concat(parameters('uniqueDeveloperId'),'CategoryUpdateCategoryItem')]",
+                "webHookUrl": "[concat(parameters('publicUrlToLocalWebServer'),'/api/UpdateCategoryItem')]",
+                "eventTypes": [
+                    "AudioTranscriptUpdated",
+                    "TextUpdated"
+                ]
+            },
+            {
+                "resourceName": "[concat(parameters('uniqueDeveloperId'),'CategoryDeleteCategoryItem')]",
+                "webHookUrl": "[concat(parameters('publicUrlToLocalWebServer'),'/api/DeleteCategoryItem')]",
+                "eventTypes": [
+                    "AudioDeleted",
+                    "ImageDeleted",
+                    "TextDeleted"
+                ]
+            }
+        ]
+    },
+    "resources": [
+        {
+            "name": "[concat(variables('eventGridTopicName'), '/Microsoft.EventGrid/', variables('eventGridFunctionSubscriptions')[copyIndex('eventGridFunctionSubscriptions')].resourceName)]",
+            "copy": {
+                "name": "eventGridFunctionSubscriptions",
+                "count": "[length(variables('eventGridFunctionSubscriptions'))]",
+                "mode": "Parallel"
+            },
+            "type": "Microsoft.EventGrid/topics/providers/eventSubscriptions",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "destination": {
+                    "endpointType": "WebHook",
+                    "properties": {
+                        "endpointUrl": "[variables('eventGridFunctionSubscriptions')[copyIndex('eventGridFunctionSubscriptions')].webHookUrl]"
+                    }
+                },
+                "filter": {
+                    "includedEventTypes": "[variables('eventGridFunctionSubscriptions')[copyIndex('eventGridFunctionSubscriptions')].eventTypes]"
+                },
+                "expirationTimeUtc": "[parameters('expireTimeUtc')]"
+            }
+        }
+    ]
+}

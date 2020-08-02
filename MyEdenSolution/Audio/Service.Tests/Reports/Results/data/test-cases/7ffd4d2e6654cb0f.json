@@ -1,0 +1,41 @@
+{
+  "uid" : "7ffd4d2e6654cb0f",
+  "name" : "WithInvalidAudioIdReturnsAudioNotFound",
+  "fullName" : "MyEdenSolution.Audio.Service.Tests.Unit.DeleteFunctionTests.WithInvalidAudioIdReturnsAudioNotFound",
+  "historyId" : "MyEdenSolution.Audio.Service.Tests.Unit.DeleteFunctionTests.WithInvalidAudioIdReturnsAudioNotFound",
+  "time" : {
+    "start" : 1595381379657,
+    "stop" : 1595381379659,
+    "duration" : 2
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "suite",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.DeleteFunctionTests"
+  }, {
+    "name" : "testClass",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.DeleteFunctionTests"
+  }, {
+    "name" : "package",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.DeleteFunctionTests"
+  }, {
+    "name" : "resultFormat",
+    "value" : "trx"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "7ffd4d2e6654cb0f.json",
+  "parameterValues" : [ ]
+}

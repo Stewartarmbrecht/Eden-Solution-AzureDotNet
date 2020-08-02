@@ -1,0 +1,114 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "uniqueResourcesystemName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "resourcesystemName": "[concat(parameters('uniqueResourcesystemName'),'-text')]",
+
+        "applicationInsightsName": "[concat(variables('resourcesystemName'), '-ai')]",
+
+        "functionsAppServicePlanName": "[concat(variables('resourcesystemName'),'-asp')]",
+        "functionsApiAppName": "[concat(variables('resourcesystemName'),'-api')]",
+
+        "cosmosDbAccountName": "[concat(variables('resourcesystemName'), '-db')]",
+        "cosmosDbDatabaseName": "Text",
+        "cosmosDbCollectionName": "Text",
+
+        "eventGridTopicResourceId": "[resourceId(concat(parameters('uniqueResourcesystemName'),'-events'), 'Microsoft.EventGrid/topics', concat(parameters('uniqueResourcesystemName'),'-events-topic'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('applicationInsightsName')]",
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2014-04-01",
+            "location": "[resourceGroup().location]",
+            "kind": "other",
+            "properties": {
+                "applicationId": "[variables('applicationInsightsName')]"
+            }
+        },
+        {
+            "name": "[variables('functionsAppServicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-09-01",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "workerTierName": null,
+                "adminSiteName": null,
+                "hostingEnvironmentProfile": null,
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "name": "[variables('functionsApiAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-08-01",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]",
+                "reserved": false
+            },
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "resources": [
+                {
+                    "name": "appsettings",
+                    "type": "config",
+                    "apiVersion": "2014-11-01",
+                    "properties": {
+                        "FUNCTIONS_EXTENSION_VERSION": "beta",
+                        "AzureWebJobsSecretStorageType": "Files",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey]",
+                        "EventGridTopicEndpoint": "[reference(variables('eventGridTopicResourceId'), '2018-01-01').endpoint]",
+                        "EventGridTopicKey": "[listKeys(variables('eventGridTopicResourceId'), '2018-01-01').key1]",
+                        "CosmosDBAccountEndpointUrl": "[reference(variables('cosmosDbAccountName')).documentEndpoint]",
+                        "CosmosDBAccountKey": "[listKeys(variables('cosmosDbAccountName'), '2015-04-08').primaryMasterKey]",
+                        "DatabaseName": "[variables('cosmosDbDatabaseName')]",
+                        "CollectionName": "[variables('cosmosDbCollectionName')]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionsApiAppName'))]",
+                        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccountName'))]"
+                    ]
+                }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]"
+            ]
+        },
+
+        {
+            "name": "[variables('cosmosDbAccountName')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-04-08",
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                }
+            }
+        }
+    ]
+}

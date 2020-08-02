@@ -1,0 +1,41 @@
+{
+  "uid" : "1f0dc93d50f51e96",
+  "name" : "WithThrownExceptionThrowsException",
+  "fullName" : "MyEdenSolution.Audio.Service.Tests.Unit.HealthCheckFunctionTests.WithThrownExceptionThrowsException",
+  "historyId" : "MyEdenSolution.Audio.Service.Tests.Unit.HealthCheckFunctionTests.WithThrownExceptionThrowsException",
+  "time" : {
+    "start" : 1595381379704,
+    "stop" : 1595381379708,
+    "duration" : 4
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "suite",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.HealthCheckFunctionTests"
+  }, {
+    "name" : "testClass",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.HealthCheckFunctionTests"
+  }, {
+    "name" : "package",
+    "value" : "MyEdenSolution.Audio.Service.Tests.Unit.HealthCheckFunctionTests"
+  }, {
+    "name" : "resultFormat",
+    "value" : "trx"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "1f0dc93d50f51e96.json",
+  "parameterValues" : [ ]
+}
