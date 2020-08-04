@@ -8,6 +8,6 @@ param(
     Set-Location "./Service"
     $verbosity = $VerbosePreference
     $VerbosePreference = "Continue"
-    ng test --code-coverage --watch=false | Write-Verbose
+    ng test --code-coverage | Write-Verbose
     $VerbosePreference = $verbosity
     Write-EdenBuildInfo "Finished testing the Angular application." $LoggingPrefix
