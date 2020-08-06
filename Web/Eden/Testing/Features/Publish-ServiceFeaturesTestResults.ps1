@@ -5,5 +5,5 @@ param(
 )
 
     Write-EdenBuildInfo "Publishing the code test results xml report." $LoggingPrefix
-    Copy-Item "./Service/testresults/junit/*" -Destination "./Reports/TestResults/Results.xml" -Force
+    Copy-Item "./Service/testresults/junit/e2e-test-result.xml" -Destination "./Reports/TestResults/Features.xml" -Force
     Write-EdenBuildInfo "Finished publishing the code test results xml report." $LoggingPrefix
