@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
 

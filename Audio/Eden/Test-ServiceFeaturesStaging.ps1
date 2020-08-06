@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
 
-$apiName = "$($EdenEnvConfig.EnvironmentName)-audio".ToLower()
+$apiName = "$($Settings.EnvironmentName)-audio".ToLower()
 Write-EdenBuildInfo "Setting the target url for the features test to: 'https://$apiName-staging.azurewebsites.net/api/audio'." $LoggingPrefix
 $Env:FeaturesUrl = "https://$apiName-staging.azurewebsites.net/api/audio"
 

@@ -1,28 +1,28 @@
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
 
     Write-EdenBuildInfo "Connecting to azure tenant using the following configuration:" $loggingPrefix
 
-    Write-EdenBuildInfo "SolutionName       : $($EdenEnvConfig.SolutionName)" $LoggingPrefix
-    Write-EdenBuildInfo "ServiceName        : $($EdenEnvConfig.ServiceName)" $LoggingPrefix
-    Write-EdenBuildInfo "EnvironmentName    : $($EdenEnvConfig.EnvironmentName)" $LoggingPrefix
-    Write-EdenBuildInfo "Region             : $($EdenEnvConfig.Region)" $LoggingPrefix
-    Write-EdenBuildInfo "ServicePrincipalId : $($EdenEnvConfig.ServicePrincipalId)" $LoggingPrefix
-    Write-EdenBuildInfo "TenantId           : $($EdenEnvConfig.TenantId)" $LoggingPrefix
-    Write-EdenBuildInfo "DeveloperId        : $($EdenEnvConfig.DeveloperId)" $LoggingPrefix
+    Write-EdenBuildInfo "SolutionName       : $($Settings.SolutionName)" $LoggingPrefix
+    Write-EdenBuildInfo "ServiceName        : $($Settings.ServiceName)" $LoggingPrefix
+    Write-EdenBuildInfo "EnvironmentName    : $($Settings.EnvironmentName)" $LoggingPrefix
+    Write-EdenBuildInfo "Region             : $($Settings.Region)" $LoggingPrefix
+    Write-EdenBuildInfo "ServicePrincipalId : $($Settings.ServicePrincipalId)" $LoggingPrefix
+    Write-EdenBuildInfo "TenantId           : $($Settings.TenantId)" $LoggingPrefix
+    Write-EdenBuildInfo "DeveloperId        : $($Settings.DeveloperId)" $LoggingPrefix
 
     $pscredential = New-Object System.Management.Automation.PSCredential( `
-        $EdenEnvConfig.ServicePrincipalId, `
-        (ConvertTo-SecureString $EdenEnvConfig.ServicePrincipalPassword) `
+        $Settings.ServicePrincipalId, `
+        (ConvertTo-SecureString $Settings.ServicePrincipalPassword) `
     )
-    Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $EdenEnvConfig.TenantId | Write-Verbose
+    Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $Settings.TenantId | Write-Verbose
 
     Write-EdenBuildInfo "Deploying the event grid subscriptions for the local functions app." $loggingPrefix
 
-    $eventsResourceGroupName = "$($EdenEnvConfig.EnvironmentName)-events"
+    $eventsResourceGroupName = "$($Settings.EnvironmentName)-events"
     $eventsSubscriptionDeploymentFile = "./Infrastructure/Subscriptions.json"
     $expireTime = Get-Date
     $expireTimeUtc = $expireTime.AddHours(1).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
@@ -32,8 +32,8 @@ param(
     $result = New-AzResourceGroupDeployment `
         -ResourceGroupName $eventsResourceGroupName `
         -TemplateFile $eventsSubscriptionDeploymentFile `
-        -InstanceName $EdenEnvConfig.EnvironmentName `
-        -PublicUrlToLocalWebServer $EdenEnvConfig.PublicUrlToLocalWebServer `
-        -UniqueDeveloperId $EdenEnvConfig.DeveloperId `
+        -InstanceName $Settings.EnvironmentName `
+        -PublicUrlToLocalWebServer $Settings.PublicUrlToLocalWebServer `
+        -UniqueDeveloperId $Settings.DeveloperId `
         -ExpireTimeUtc $expireTimeUtc
     if ($VerbosePreference -ne 'SilentlyContinue') { $result }

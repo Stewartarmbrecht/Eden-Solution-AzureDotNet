@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
 try {
@@ -25,7 +25,7 @@ try {
     Set-Location "./Service"
 
     Write-EdenBuildInfo "Fetching the app settings from azure." $LoggingPrefix
-    func azure functionapp fetch-app-settings "$($EdenEnvConfig.EnvironmentName)-audio"
+    func azure functionapp fetch-app-settings "$($Settings.EnvironmentName)-audio"
 
     Write-EdenBuildInfo "Adding the run time setting for 'dotnet'." $LoggingPrefix
     func settings add "FUNCTIONS_WORKER_RUNTIME" "dotnet"

@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
     Write-EdenBuildInfo "Testing the MyEdenSolution.Audio.sln Solution continuously using the 'Service.Tests/MyEdenSolution.Audio.Service.Tests'." $LoggingPrefix

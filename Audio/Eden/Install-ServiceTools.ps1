@@ -1,7 +1,7 @@
 # Run a separate PowerShell process because the script calls exit, so it will end the current PowerShell session.
 [CmdletBinding()]
 param(
-    $EdenEnvConfig,
+    $Settings,
     [String] $LoggingPrefix
 )
 try {
