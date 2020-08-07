@@ -1,5 +1,5 @@
 TN:
-SF:src\polyfills.ts
+SF:src/polyfills.ts
 FNF:0
 FNH:0
 LF:0
@@ -8,7 +8,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\test.ts
+SF:src/test.ts
 FNF:0
 FNH:0
 DA:18,1
@@ -20,7 +20,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\app.component.ts
+SF:src/app/app.component.ts
 FNF:0
 FNH:0
 DA:8,1
@@ -31,7 +31,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\hero.service.ts
+SF:src/app/hero.service.ts
 FN:12,(anonymous_0)
 FN:14,(anonymous_1)
 FN:20,(anonymous_2)
@@ -54,7 +54,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\message.service.ts
+SF:src/app/message.service.ts
 FN:9,(anonymous_1)
 FN:13,(anonymous_2)
 FNF:2
@@ -71,7 +71,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\mock-heroes.ts
+SF:src/app/mock-heroes.ts
 FNF:0
 FNH:0
 DA:3,1
@@ -81,7 +81,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\dashboard\dashboard.component.ts
+SF:src/app/dashboard/dashboard.component.ts
 FN:13,(anonymous_0)
 FN:15,(anonymous_1)
 FN:19,(anonymous_2)
@@ -104,7 +104,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\hero-detail\hero-detail.component.ts
+SF:src/app/hero-detail/hero-detail.component.ts
 FN:16,(anonymous_0)
 FN:22,(anonymous_1)
 FN:26,(anonymous_2)
@@ -132,7 +132,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\heroes\heroes.component.ts
+SF:src/app/heroes/heroes.component.ts
 FN:14,(anonymous_0)
 FN:16,(anonymous_1)
 FN:20,(anonymous_2)
@@ -154,7 +154,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\app\messages\messages.component.ts
+SF:src/app/messages/messages.component.ts
 FN:11,(anonymous_0)
 FN:13,(anonymous_1)
 FNF:2
