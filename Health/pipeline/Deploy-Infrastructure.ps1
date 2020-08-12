@@ -20,17 +20,17 @@ try {
     $resourceGroupName = "$instanceName-health".ToLower()
     $deploymentFile = "./../Infrastructure/Infrastructure.json"
 
-    Write-EdenBuildInfo "Deploying the service infrastructure." $loggingPrefix
+    Write-EdenInfo "Deploying the service infrastructure." $loggingPrefix
 
     Connect-AzureServicePrincipal $loggingPrefix
 
-    Write-EdenBuildInfo "Creating the resource group: $resourceGroupName." $loggingPrefix
+    Write-EdenInfo "Creating the resource group: $resourceGroupName." $loggingPrefix
     New-AzResourceGroup -Name $resourceGroupName -Location $region -Force | Write-Verbose
 
-    Write-EdenBuildInfo "Executing the deployment using: $deploymentFile." $loggingPrefix
+    Write-EdenInfo "Executing the deployment using: $deploymentFile." $loggingPrefix
     New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $deploymentFile -InstanceName $instanceName | Write-Verbose
 
-    Write-EdenBuildInfo "Deployed the service infrastructure." $loggingPrefix
+    Write-EdenInfo "Deployed the service infrastructure." $loggingPrefix
     Set-Location $currentDirectory
 }
 catch {

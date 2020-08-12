@@ -16,7 +16,7 @@ if ($InstanceName) {
     $loggingPrefix = "MyEdenSolution Configuration $Env:InstanceName"
 }
 
-Write-EdenBuildInfo "Configuring the environment." $loggingPrefix
+Write-EdenInfo "Configuring the environment." $loggingPrefix
 
 if ($InstanceName) {
     # [Environment]::SetEnvironmentVariable("InstanceName", $InstanceName, [System.EnvironmentVariableTarget]::Machine)
@@ -60,4 +60,4 @@ Write-Verbose "Env:InstanceName=$Env:InstanceName"
 Write-Verbose "Env:Region=$Env:Region"
 Write-Verbose "Env:UserId=$Env:UserId"
 Write-Verbose "Env:TenantId=$Env:TenantId"
-Write-EdenBuildInfo "Configured the environment." $loggingPrefix
+Write-EdenInfo "Configured the environment." $loggingPrefix

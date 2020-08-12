@@ -21,10 +21,10 @@ try
     $loggingPrefix = "$solutionName $serviceName Test End to End $instanceName"
 
     if ($Continuous) {
-        Write-EdenBuildInfo "Running automated tests continuously." $loggingPrefix
+        Write-EdenInfo "Running automated tests continuously." $loggingPrefix
         ./Start-Local.ps1 -RunAutomatedTestsContinuously -Verbose
     } else {
-        Write-EdenBuildInfo "Running automated tests." $loggingPrefix
+        Write-EdenInfo "Running automated tests." $loggingPrefix
         ./Start-Local.ps1 -RunAutomatedTests
     }
 

@@ -4,6 +4,6 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Building the MyEdenSolution.Audio.sln Solution." $LoggingPrefix
+    Write-EdenInfo "Building the MyEdenSolution.Audio.sln Solution." $LoggingPrefix
     dotnet build ./MyEdenSolution.Audio.sln
-    Write-EdenBuildInfo "Finished building the MyEdenSolution.Audio.sln Solution." $LoggingPrefix
+    Write-EdenInfo "Finished building the MyEdenSolution.Audio.sln Solution." $LoggingPrefix

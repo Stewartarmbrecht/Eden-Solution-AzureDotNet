@@ -23,7 +23,7 @@ try
 
     $loggingPrefix = "MyEdenSolution Audio Run $instanceName"
 
-    Write-EdenBuildInfo "Starting jobs." $loggingPrefix
+    Write-EdenInfo "Starting jobs." $loggingPrefix
 
     $serviceJob = Start-Function -FunctionLocation "./../Service" -Port $port -LoggingPrefix $loggingPrefix -Continuous:$Continuous
 
@@ -46,7 +46,7 @@ try
         
         
         if($subscribed -eq $FALSE -and ![string]::IsNullOrEmpty($publicUrl) -and $TRUE -eq $healthCheck) {
-            Write-EdenBuildInfo "Deploying subscriptions to event grid." $loggingPrefix
+            Write-EdenInfo "Deploying subscriptions to event grid." $loggingPrefix
             Deploy-LocalSubscriptions `
                 -PublicUrlToLocalWebServer $publicUrl `
                 -LoggingPrefix $loggingPrefix
@@ -75,10 +75,10 @@ try
         Get-Job | Receive-Job | Write-Verbose
         if ($automatedTestJob -and $automatedTestJob.State -ne "Running")
         {
-            Write-EdenBuildInfo "Stopping and removing jobs because testing is no longer running." $loggingPrefix
+            Write-EdenInfo "Stopping and removing jobs because testing is no longer running." $loggingPrefix
             Stop-Job rt-*
             Remove-Job rt-*
-            Write-EdenBuildInfo "Stopped." $loggingPrefix
+            Write-EdenInfo "Stopped." $loggingPrefix
         }
      }
 
@@ -87,8 +87,8 @@ try
 } 
 finally 
 {
-    Write-EdenBuildInfo "Stopping and removing jobs." $loggingPrefix
+    Write-EdenInfo "Stopping and removing jobs." $loggingPrefix
     Stop-Job rt-*
     Remove-Job rt-*
-    Write-EdenBuildInfo "Stopped." $loggingPrefix
+    Write-EdenInfo "Stopped." $loggingPrefix
 }

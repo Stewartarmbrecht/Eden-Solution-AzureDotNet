@@ -24,13 +24,13 @@ try {
     
     Set-Location "./Service"
 
-    Write-EdenBuildInfo "Fetching the app settings from azure." $LoggingPrefix
+    Write-EdenInfo "Fetching the app settings from azure." $LoggingPrefix
     func azure functionapp fetch-app-settings "$($Settings.EnvironmentName)-audio"
 
-    Write-EdenBuildInfo "Adding the run time setting for 'dotnet'." $LoggingPrefix
+    Write-EdenInfo "Adding the run time setting for 'dotnet'." $LoggingPrefix
     func settings add "FUNCTIONS_WORKER_RUNTIME" "dotnet"
 
-    Write-EdenBuildInfo "Adding the run time port setting for '7071'." $LoggingPrefix
+    Write-EdenInfo "Adding the run time port setting for '7071'." $LoggingPrefix
     func settings add "Host.LocalHttpPort" "7071"
     
     Set-Location $currentDirectory        

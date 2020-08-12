@@ -4,6 +4,6 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Performing some action." $LoggingPrefix
+    Write-EdenInfo "Performing some action." $LoggingPrefix
     # Perform the action here.
-    Write-EdenBuildInfo "Finished performing some action." $LoggingPrefix
+    Write-EdenInfo "Finished performing some action." $LoggingPrefix

@@ -53,7 +53,7 @@ try
     
     Invoke-BuildCommand $command $message $loggingPrefix 
     $VerbosePreference = $verbose
-    Write-EdenBuildInfo "Finished running unit tests." $loggingPrefix
+    Write-EdenInfo "Finished running unit tests." $loggingPrefix
 
     Set-Location $currentDirectory
 }
@@ -61,6 +61,6 @@ catch
 {
     $VerbosePreference = $verbose
     Set-Location $currentDirectory
-    Write-EdenBuildError "Running unit tests failed." $loggingPrefix
+    Write-EdenError "Running unit tests failed." $loggingPrefix
     throw $_
 }

@@ -4,6 +4,6 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Building the Angular application with watch enabled." $LoggingPrefix
+    Write-EdenInfo "Building the Angular application with watch enabled." $LoggingPrefix
     Set-Location "./Service"
     ng build --watch=true

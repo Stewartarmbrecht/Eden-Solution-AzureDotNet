@@ -1,4 +1,4 @@
-function Write-EdenBuildInfo {
+function Write-EdenInfo {
     [CmdletBinding()]
     param(
         [String]$Message,
@@ -6,7 +6,7 @@ function Write-EdenBuildInfo {
         )  
     Write-Host "$(Get-Date -UFormat "%Y-%m-%d %H:%M:%S") $($LoggingPrefix): $Message"  -ForegroundColor DarkCyan 
 }
-function Write-EdenBuildError {
+function Write-EdenError {
     [CmdletBinding()]
     param(
         [String]$Message,
@@ -26,10 +26,10 @@ function Invoke-BuildCommand {
         [switch]$ReturnResults,
         [switch]$Direct
     )
-    Write-EdenBuildInfo $LogEntry $LoggingPrefix
-    # Write-EdenBuildInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
+    Write-EdenInfo $LogEntry $LoggingPrefix
+    # Write-EdenInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
     try {
-        # Write-EdenBuildInfo "Invoking command: $Command" $LoggingPrefix
+        # Write-EdenInfo "Invoking command: $Command" $LoggingPrefix
         # $result | Write-Verbose
         # Write-Debug $result.ToString()
         if ($ReturnResults) {
@@ -47,9 +47,9 @@ function Invoke-BuildCommand {
             }
         }
     } catch {
-        Write-EdenBuildError "Failed to execute command: $Command" $LoggingPrefix
+        Write-EdenError "Failed to execute command: $Command" $LoggingPrefix
         # Write-Error $_
-        Write-EdenBuildError "Exiting due to error!" $LoggingPrefix
+        Write-EdenError "Exiting due to error!" $LoggingPrefix
     }
 }
 
@@ -67,7 +67,7 @@ function Connect-AzureServicePrincipal {
         $userId = $Env:UserId
         #$subscriptionId = $Env:SubscriptionId
     
-        Write-EdenBuildInfo "Connecting to Azure using User Id: $userId" $loggingPrefix
+        Write-EdenInfo "Connecting to Azure using User Id: $userId" $loggingPrefix
     
         $pswd = ConvertTo-SecureString $password
         $pscredential = New-Object System.Management.Automation.PSCredential($userId, $pswd)
@@ -76,7 +76,7 @@ function Connect-AzureServicePrincipal {
     }
     catch
     {
-        Write-EdenBuildError 
+        Write-EdenError 
         throw $_
     }
 }
@@ -101,18 +101,18 @@ function Test-Automated
         . ./Functions.ps1
     
         $Env:AutomatedUrl = $AutomatedUrl
-        Write-EdenBuildInfo "This application does not have any automated tests yet.  Please add some!" $loggingPrefix
-        # Write-EdenBuildInfo "Running automated tests against '$AutomatedUrl'." $LoggingPrefix
+        Write-EdenInfo "This application does not have any automated tests yet.  Please add some!" $loggingPrefix
+        # Write-EdenInfo "Running automated tests against '$AutomatedUrl'." $LoggingPrefix
 
         # if ($Continuous)
         # {
-        #     Write-EdenBuildInfo "Running automated tests continuously." $LoggingPrefix
+        #     Write-EdenInfo "Running automated tests continuously." $LoggingPrefix
         #     dotnet watch --project ./../tests/MyEdenSolution.Audio.Tests.csproj test --filter TestCategory=Automated
         # }
         # else
         # {
         #     Invoke-BuildCommand "dotnet test ./../tests/MyEdenSolution.Audio.Tests.csproj --filter TestCategory=Automated" $LoggingPrefix "Running automated tests once."
-        #     Write-EdenBuildInfo "Finished running automated tests." $LoggingPrefix
+        #     Write-EdenInfo "Finished running automated tests." $LoggingPrefix
         # }
     } -ArgumentList @($AutomatedUrl, $Continuous, $LoggingPrefix, $VerbosePreference)
     return $automatedTestJob

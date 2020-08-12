@@ -16,7 +16,7 @@ try {
 
     $loggingPrefix = "$solutionName $serviceName Pipeline $instanceName"
 
-    Write-EdenBuildInfo "Running the full pipeline for the service." $loggingPrefix
+    Write-EdenInfo "Running the full pipeline for the service." $loggingPrefix
 
     ./Build-Application.ps1
     ./Test-Unit.ps1
@@ -24,7 +24,7 @@ try {
     ./Build-DeploymentPackage.ps1
     ./Deploy-Service.ps1
 
-    Write-EdenBuildInfo "Finished the full pipeline for the service." $loggingPrefix
+    Write-EdenInfo "Finished the full pipeline for the service." $loggingPrefix
 
     Set-Location $currentDirectory
 }

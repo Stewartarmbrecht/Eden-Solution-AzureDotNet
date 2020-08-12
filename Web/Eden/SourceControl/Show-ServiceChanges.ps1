@@ -4,5 +4,5 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Getting changed files." $LoggingPrefix
+    Write-EdenInfo "Getting changed files." $LoggingPrefix
     git diff --name-status

@@ -11,7 +11,7 @@ $instanceName = $Env:InstanceName
 
 $loggingPrefix = "MyEdenSolution Audio Pipeline $instanceName"
 
-Write-EdenBuildInfo "Running the full pipeline for the microservice." $loggingPrefix
+Write-EdenInfo "Running the full pipeline for the microservice." $loggingPrefix
 
 ./Build-Application.ps1
 ./Test-Unit.ps1
@@ -19,6 +19,6 @@ Write-EdenBuildInfo "Running the full pipeline for the microservice." $loggingPr
 ./Build-DeploymentPackage.ps1
 ./Deploy-Service.ps1
 
-Write-EdenBuildInfo "Finished the full pipeline for the microservice." $loggingPrefix
+Write-EdenInfo "Finished the full pipeline for the microservice." $loggingPrefix
 
 Set-Location $currentDirectory

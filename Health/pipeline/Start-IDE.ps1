@@ -9,7 +9,7 @@ Set-Location $PSScriptRoot
 
 $loggingPrefix = "MyEdenSolution Start IDE"
 
-Write-EdenBuildInfo "Starting up the default development tool." $loggingPrefix
+Write-EdenInfo "Starting up the default development tool." $loggingPrefix
 
 Set-Location ../
 

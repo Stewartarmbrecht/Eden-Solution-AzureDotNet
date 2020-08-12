@@ -13,11 +13,11 @@ $instanceName = $Env:InstanceName
 
 $loggingPrefix = "MyEdenSolution API Pipeline $instanceName"
 
-Write-EdenBuildInfo "Running the full pipeline for the events subsystem." $loggingPrefix
+Write-EdenInfo "Running the full pipeline for the events subsystem." $loggingPrefix
 
 ./Build-DeploymentPackage.ps1
 ./Deploy-Service.ps1
 
-Write-EdenBuildInfo "Finished the full pipeline for the API subsystem." $loggingPrefix
+Write-EdenInfo "Finished the full pipeline for the API subsystem." $loggingPrefix
 
 Set-Location $currentDirectory

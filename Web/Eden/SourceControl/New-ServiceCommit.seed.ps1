@@ -10,7 +10,7 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Committing the staged changes." $LoggingPrefix
+    Write-EdenInfo "Committing the staged changes." $LoggingPrefix
     if ($AllMessage) {
         git commit -am "$Message"
     } elseif ($All) {

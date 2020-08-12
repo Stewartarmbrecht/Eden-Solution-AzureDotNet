@@ -11,6 +11,6 @@ $loggingPrefix = "MyEdenSolution Events Build"
 
 Invoke-BuildCommand "dotnet build ./../MyEdenSolution.Events.sln" $loggingPrefix "Building the solution."
 
-Write-EdenBuildInfo "Finished building the solution." $loggingPrefix
+Write-EdenInfo "Finished building the solution." $loggingPrefix
 
 Set-Location $currentDirectory

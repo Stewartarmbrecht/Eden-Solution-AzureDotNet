@@ -3,4 +3,4 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "You already have everything you need. ;)" $LoggingPrefix
+    Write-EdenInfo "You already have everything you need. ;)" $LoggingPrefix

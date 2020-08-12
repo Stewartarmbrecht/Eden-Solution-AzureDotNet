@@ -1,4 +1,4 @@
-function Write-EdenBuildInfo {
+function Write-EdenInfo {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -6,7 +6,7 @@ function Write-EdenBuildInfo {
         )  
     Write-Host "$(Get-Date -UFormat "%Y-%m-%d %H:%M:%S") $($loggingPrefix): $message"  -ForegroundColor DarkCyan 
 }
-function Write-EdenBuildError {
+function Write-EdenError {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -25,8 +25,8 @@ function Invoke-BuildCommand {
         [String]$LoggingPrefix, 
         [switch]$ReturnResults
     )
-    Write-EdenBuildInfo $LogEntry $LoggingPrefix
-    # Write-EdenBuildInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
+    Write-EdenInfo $LogEntry $LoggingPrefix
+    # Write-EdenInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
     try {
         if ($ReturnResults) 
         { 
@@ -43,9 +43,9 @@ function Invoke-BuildCommand {
     } 
     catch 
     {
-        Write-EdenBuildError "Failed to execute command: $Command" $LoggingPrefix
+        Write-EdenError "Failed to execute command: $Command" $LoggingPrefix
         # Write-Error $_
-        Write-EdenBuildError "Exiting due to error!" $LoggingPrefix
+        Write-EdenError "Exiting due to error!" $LoggingPrefix
         throw $_
     }
 }
@@ -69,7 +69,7 @@ function Start-Function
 
         . ./Functions.ps1
     
-        Write-EdenBuildInfo "Setting location to '$functionLocation'" $loggingPrefix
+        Write-EdenInfo "Setting location to '$functionLocation'" $loggingPrefix
         Set-Location $functionLocation
         try {
             $command = "func host start -p $port"
@@ -77,10 +77,10 @@ function Start-Function
         } 
         catch 
         {
-            Write-EdenBuildError "If you get errno: -4058, try this: https://github.com/Azure/azure-functions-core-tools/issues/1804#issuecomment-594990804" $loggingPrefix
+            Write-EdenError "If you get errno: -4058, try this: https://github.com/Azure/azure-functions-core-tools/issues/1804#issuecomment-594990804" $loggingPrefix
             throw $_
         }
-        Write-EdenBuildInfo "The function app at '$functionLocation' is running." $loggingPrefix
+        Write-EdenInfo "The function app at '$functionLocation' is running." $loggingPrefix
     } -ArgumentList @($FunctionLocation, $Port, $LoggingPrefix, $VerbosePreference)
 }
 
@@ -106,7 +106,7 @@ function Start-LocalTunnel
             ./ngrok http http://localhost:$port -host-header=rewrite | Write-Verbose
         }
 
-        Write-EdenBuildInfo "The service tunnel is up." $loggingPrefix
+        Write-EdenInfo "The service tunnel is up." $loggingPrefix
     } -ArgumentList @($Port, $LoggingPrefix)
 }
 
@@ -120,7 +120,7 @@ function Get-PublicUrl
         [String]$LoggingPrefix
     )
     try {
-        Write-EdenBuildInfo "Calling the ngrok API to get the public url." $LoggingPrefix
+        Write-EdenInfo "Calling the ngrok API to get the public url." $LoggingPrefix
         $response = Invoke-RestMethod -URI http://localhost:4040/api/tunnels
         $privateUrl = "http://localhost:$Port"
         $tunnel = $response.tunnels | Where-Object {
@@ -128,7 +128,7 @@ function Get-PublicUrl
         } | Select-Object public_url
         $publicUrl = $tunnel.public_url
         if(![string]::IsNullOrEmpty($publicUrl)) {
-            Write-EdenBuildInfo "Found the public URL: '$publicUrl' for private URL: '$privateUrl'." $LoggingPrefix
+            Write-EdenInfo "Found the public URL: '$publicUrl' for private URL: '$privateUrl'." $LoggingPrefix
             return $publicUrl
         } else {
             return ""
@@ -136,7 +136,7 @@ function Get-PublicUrl
     }
     catch {
         $message = $_.Exception.Message
-        Write-EdenBuildError "Failed to get the public url: '$message'." $loggingPrefix
+        Write-EdenError "Failed to get the public url: '$message'." $loggingPrefix
         return ""
     }
 }
@@ -151,18 +151,18 @@ function Get-HealthStatus
         [String]$LoggingPrefix
     )
     try {
-        Write-EdenBuildInfo "Checking API availability at: $PublicUrl/api/healthcheck?userId=developer98765@test.com" $LoggingPrefix
+        Write-EdenInfo "Checking API availability at: $PublicUrl/api/healthcheck?userId=developer98765@test.com" $LoggingPrefix
         $response = Invoke-RestMethod -URI "$PublicUrl/api/healthcheck?userId=developer98765@test.com"
         $status = $response.status
         if($status -eq 0) {
-            Write-EdenBuildInfo "Health check status successful." $LoggingPrefix
+            Write-EdenInfo "Health check status successful." $LoggingPrefix
             return $TRUE
         } else {
             return $FALSE
         }
     } catch {
         $message = $_.Exception.Message
-        Write-EdenBuildError "Failed to execute health check: '$message'." $LoggingPrefix
+        Write-EdenError "Failed to execute health check: '$message'." $LoggingPrefix
         return $FALSE
     }
 }
@@ -193,7 +193,7 @@ function Test-Automated
         . ./Functions.ps1
     
         $Env:AutomatedUrl = $AutomatedUrl
-        Write-EdenBuildInfo "Running automated tests against '$AutomatedUrl'." $LoggingPrefix
+        Write-EdenInfo "Running automated tests against '$AutomatedUrl'." $LoggingPrefix
 
         if ($Continuous)
         {
@@ -202,7 +202,7 @@ function Test-Automated
         else
         {
             Invoke-BuildCommand "dotnet test ./../Service.Tests/$SolutionName.$ServiceName.Service.Tests.csproj --filter TestCategory=Automated" "Running automated tests once." $LoggingPrefix
-            Write-EdenBuildInfo "Finished running automated tests." $LoggingPrefix
+            Write-EdenInfo "Finished running automated tests." $LoggingPrefix
         }
     } -ArgumentList @($AutomatedUrl, $Continuous, $LoggingPrefix, $VerbosePreference, $SolutionName, $ServiceName)
     return $automatedTestJob
@@ -218,7 +218,7 @@ function Connect-AzureServicePrincipal {
     $password = $Env:Password
     $tenantId = $Env:TenantId
 
-    Write-EdenBuildInfo "Connecting to service principal: $userId on tenant: $tenantId" $loggingPrefix
+    Write-EdenInfo "Connecting to service principal: $userId on tenant: $tenantId" $loggingPrefix
     
     $pswd = ConvertTo-SecureString $password
     $pscredential = New-Object System.Management.Automation.PSCredential($userId, $pswd)

@@ -4,7 +4,7 @@ param(
     [String] $LoggingPrefix
 )
 try {
-    Write-EdenBuildInfo "Calling service health check at 'http://localhost:4001/api/healthcheck?userId=developer98765@test.com'." $LoggingPrefix
+    Write-EdenInfo "Calling service health check at 'http://localhost:4001/api/healthcheck?userId=developer98765@test.com'." $LoggingPrefix
     $response = Invoke-RestMethod -URI "http://localhost:4001/api/healthcheck?userId=developer98765@test.com"
     Write-Host ""
     Write-Host $response -ForegroundColor Blue
@@ -12,6 +12,6 @@ try {
 } catch {
     $message = $_.Exception.Message
     Write-Host ""
-    Write-EdenBuildError "Failed to execute health check: '$message'." $LoggingPrefix
+    Write-EdenError "Failed to execute health check: '$message'." $LoggingPrefix
     Write-Host ""
 }

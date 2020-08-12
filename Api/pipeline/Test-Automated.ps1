@@ -13,6 +13,6 @@ Set-Location $PSScriptRoot
 
 $loggingPrefix = "MyEdenSolution Api Test End to End $instanceName"
 
-Write-EdenBuildInfo "This application does not have any automated tests yet.  Please add some!" $loggingPrefix
+Write-EdenInfo "This application does not have any automated tests yet.  Please add some!" $loggingPrefix
 
 Set-Location $currentDirectory

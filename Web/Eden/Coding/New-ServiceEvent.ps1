@@ -6,4 +6,4 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildError "Need to add code to create an event definition." $LoggingPrefix
+    Write-EdenError "Need to add code to create an event definition." $LoggingPrefix

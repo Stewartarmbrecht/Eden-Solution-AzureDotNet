@@ -14,21 +14,21 @@ $loggingPrefix = "MyEdenSolution Setup Solution"
 
 # Run a separate PowerShell process because the script calls exit, so it will end the current PowerShell session.
 if($IsWindows -and $false) {
-    Write-EdenBuildInfo "Installing dotnet core." $loggingPrefix
+    Write-EdenInfo "Installing dotnet core." $loggingPrefix
     &powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel LTS"
-    Write-EdenBuildInfo "Installing git." $loggingPrefix
+    Write-EdenInfo "Installing git." $loggingPrefix
     winget install -e --name Git
-    Write-EdenBuildInfo "Installing Visual Studio Code." $loggingPrefix
+    Write-EdenInfo "Installing Visual Studio Code." $loggingPrefix
     winget install -q vscode
-    Write-EdenBuildInfo "Installing Azure Powershell Module." $loggingPrefix
+    Write-EdenInfo "Installing Azure Powershell Module." $loggingPrefix
     Install-Module -Name Az -AllowClobber -Scope CurrentUser
-    Write-EdenBuildInfo "Installing Azure Release Management (ARM) Module." $loggingPrefix
+    Write-EdenInfo "Installing Azure Release Management (ARM) Module." $loggingPrefix
     Install-Module -Name AzureRm -AllowClobber -Scope CurrentUser
-    Write-EdenBuildInfo "Installing Asure CLI." $loggingPrefix
+    Write-EdenInfo "Installing Asure CLI." $loggingPrefix
     Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
-    Write-EdenBuildInfo "Installing Node.js." $loggingPrefix
+    Write-EdenInfo "Installing Node.js." $loggingPrefix
     winget install openjs.nodejs
-    Write-EdenBuildInfo "Installing Azure Functions Core Tools." $loggingPrefix
+    Write-EdenInfo "Installing Azure Functions Core Tools." $loggingPrefix
     npm install -g azure-functions-core-tools@3
     Set-Location "$env:USERPROFILE\AppData\Roaming\npm\node_modules\azure-functions-core-tools\"
     npm install unzipper@0.10.7
@@ -70,10 +70,10 @@ While(Get-Job -State "Running")
     If ($Host.UI.RawUI.KeyAvailable -and ($Key = $Host.UI.RawUI.ReadKey("AllowCtrlC,NoEcho,IncludeKeyUp"))) {
         If ([Int]$Key.Character -eq 3) {
             Write-Warning "CTRL-C was used - Shutting down any running jobs before exiting the script."
-            Write-EdenBuildInfo "Stopping and removing jobs." $loggingPrefix
+            Write-EdenInfo "Stopping and removing jobs." $loggingPrefix
             Stop-Job rt-*
             Remove-Job rt-*
-            Write-EdenBuildInfo "Stopped." $loggingPrefix
+            Write-EdenInfo "Stopped." $loggingPrefix
             [Console]::TreatControlCAsInput = $False
         }
         # Flush the key buffer again for the next loop.

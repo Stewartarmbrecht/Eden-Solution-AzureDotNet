@@ -1,4 +1,4 @@
-function Write-EdenBuildInfo {
+function Write-EdenInfo {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -6,7 +6,7 @@ function Write-EdenBuildInfo {
         )  
     Write-Host "$(Get-Date -UFormat "%Y-%m-%d %H:%M:%S") $($loggingPrefix): $message"  -ForegroundColor DarkCyan 
 }
-function Write-EdenBuildError {
+function Write-EdenError {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -26,10 +26,10 @@ function Invoke-BuildCommand {
         [switch]$ReturnResults,
         [switch]$Direct
     )
-    Write-EdenBuildInfo $LogEntry $LoggingPrefix
-    # Write-EdenBuildInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
+    Write-EdenInfo $LogEntry $LoggingPrefix
+    # Write-EdenInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
     try {
-        # Write-EdenBuildInfo "Invoking command: $Command" $LoggingPrefix
+        # Write-EdenInfo "Invoking command: $Command" $LoggingPrefix
         # $result | Write-Verbose
         # Write-Debug $result.ToString()
         if ($ReturnResults) {
@@ -47,9 +47,9 @@ function Invoke-BuildCommand {
             }
         }
     } catch {
-        Write-EdenBuildError "Failed to execute command: $Command" $LoggingPrefix
+        Write-EdenError "Failed to execute command: $Command" $LoggingPrefix
         # Write-Error $_
-        Write-EdenBuildError "Exiting due to error!" $LoggingPrefix
+        Write-EdenError "Exiting due to error!" $LoggingPrefix
     }
 }
 
@@ -81,7 +81,7 @@ function Start-EdenJob {
         $Env:UniqueDeveloperId = $args[7]
         $Command = $args[8]
 
-        Write-EdenBuildInfo "Executing job command: $Command" $loggingPrefix 
+        Write-EdenInfo "Executing job command: $Command" $loggingPrefix 
 
         Invoke-Expression $Command
     
@@ -101,40 +101,40 @@ function Connect-AzureServicePrincipal {
     $subscriptionId = $Env:SubscriptionId
 
     if($null -eq $userId) {
-        Write-EdenBuildInfo "Getting Azure context." $loggingPrefix
+        Write-EdenInfo "Getting Azure context." $loggingPrefix
         $content = Get-AzContext
         if ($content) 
         {
             $needLogin = ([string]::IsNullOrEmpty($content.Account))
             if ($needLogin) {
-                Write-EdenBuildInfo "Connecting to Azure." $loggingPrefix
+                Write-EdenInfo "Connecting to Azure." $loggingPrefix
                 Connect-AzAccount
             }
         } 
 
-        Write-EdenBuildInfo "Getting azure service principal for User Name: $userName." $loggingPrefix
+        Write-EdenInfo "Getting azure service principal for User Name: $userName." $loggingPrefix
         try {
             $sp = Get-AzAdServicePrincipal -DisplayName $userName
-            Write-EdenBuildInfo "Found Azure Service Principal." $loggingPrefix
+            Write-EdenInfo "Found Azure Service Principal." $loggingPrefix
             Write-Verbose $sp
         } catch {
-            Write-EdenBuildInfo "Error getting azure service principal for User Name: $userName." $loggingPrefix
+            Write-EdenInfo "Error getting azure service principal for User Name: $userName." $loggingPrefix
             $sp = $null
         }
 
         if ($null -eq $sp) {
             Connect-AzAccount
-            Write-EdenBuildInfo "Creating azure service principal for the subscription: $subscriptionId" $loggingPrefix
+            Write-EdenInfo "Creating azure service principal for the subscription: $subscriptionId" $loggingPrefix
             # Import-Module Az.Resources # Imports the PSADPasswordCredential object
             $pswd = ConvertTo-SecureString $password
             $pswdText = ConvertFrom-SecureString $pswd -AsPlainText
             $credentials = New-Object Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential -Property @{ StartDate=Get-Date; EndDate=Get-Date -Year 2024; Password=$pswdText}
             $sp = New-AzAdServicePrincipal -DisplayName $userName -PasswordCredential $credentials
-            Write-EdenBuildInfo "Waiting for azure service principal to be created for the subscription: $subscriptionId" $loggingPrefix
+            Write-EdenInfo "Waiting for azure service principal to be created for the subscription: $subscriptionId" $loggingPrefix
             Start-Sleep 10
-            Write-EdenBuildInfo "Assigning service principal to Contributor role for the subscription: $subscriptionId" $loggingPrefix
+            Write-EdenInfo "Assigning service principal to Contributor role for the subscription: $subscriptionId" $loggingPrefix
             New-AzRoleAssignment -ApplicationId $sp.ApplicationId -RoleDefinitionName Contributor -Scope "/subscriptions/$subscriptionId"
-            Write-EdenBuildInfo "Created azure service principal and assigned to Contributor role for the subscription: $subscriptionId." $loggingPrefix
+            Write-EdenInfo "Created azure service principal and assigned to Contributor role for the subscription: $subscriptionId." $loggingPrefix
             Write-Verbose $sp
         }
         
@@ -147,6 +147,6 @@ function Connect-AzureServicePrincipal {
     Start-Sleep 10
 
     $pscredential = New-Object System.Management.Automation.PSCredential($userId, $pswd)
-    Write-EdenBuildInfo "Connecting to the service principal." $loggingPrefix
+    Write-EdenInfo "Connecting to the service principal." $loggingPrefix
     Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenantId -Subscription $subscriptionId
 }

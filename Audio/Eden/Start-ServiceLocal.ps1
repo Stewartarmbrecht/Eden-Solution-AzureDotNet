@@ -4,7 +4,7 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Starting the MyEdenSolution.Audio.Service.csproj function application." $LoggingPrefix
+    Write-EdenInfo "Starting the MyEdenSolution.Audio.Service.csproj function application." $LoggingPrefix
 
     $location = Get-Location
     try {

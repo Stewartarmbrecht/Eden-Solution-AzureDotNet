@@ -1,4 +1,4 @@
-function Write-EdenBuildInfo {
+function Write-EdenInfo {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -6,7 +6,7 @@ function Write-EdenBuildInfo {
         )  
     Write-Host "$(Get-Date -UFormat "%Y-%m-%d %H:%M:%S") $($loggingPrefix): $message"  -ForegroundColor DarkCyan 
 }
-function Write-EdenBuildError {
+function Write-EdenError {
     [CmdletBinding()]
     param(
         [String]$message,
@@ -26,10 +26,10 @@ function Invoke-BuildCommand {
         [switch]$ReturnResults,
         [switch]$Direct
     )
-    Write-EdenBuildInfo $LogEntry $LoggingPrefix
-    # Write-EdenBuildInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
+    Write-EdenInfo $LogEntry $LoggingPrefix
+    # Write-EdenInfo "    In Direcotory: $(Get-Location)" $loggingPrefix
     try {
-        # Write-EdenBuildInfo "Invoking command: $Command" $LoggingPrefix
+        # Write-EdenInfo "Invoking command: $Command" $LoggingPrefix
         # $result | Write-Verbose
         # Write-Debug $result.ToString()
         if ($ReturnResults) {
@@ -47,9 +47,9 @@ function Invoke-BuildCommand {
             }
         }
     } catch {
-        Write-EdenBuildError "Failed to execute command: $Command" $LoggingPrefix
+        Write-EdenError "Failed to execute command: $Command" $LoggingPrefix
         # Write-Error $_
-        Write-EdenBuildError "Exiting due to error!" $LoggingPrefix
+        Write-EdenError "Exiting due to error!" $LoggingPrefix
     }
 }
 
@@ -65,7 +65,7 @@ function Connect-AzureServicePrincipal {
     $userId = $Env:UserId
     $subscriptionId = $Env:SubscriptionId
 
-    Write-EdenBuildInfo "Connecting to Azure using User Id: $userId" $loggingPrefix
+    Write-EdenInfo "Connecting to Azure using User Id: $userId" $loggingPrefix
 
     $pswd = ConvertTo-SecureString $password
     $pscredential = New-Object System.Management.Automation.PSCredential($userId, $pswd)

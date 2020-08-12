@@ -4,7 +4,7 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Starting the ngrok local tunnel to the function application.  Private url: 'http://localhost:7071'." $LoggingPrefix
+    Write-EdenInfo "Starting the ngrok local tunnel to the function application.  Private url: 'http://localhost:7071'." $LoggingPrefix
 
     $location = Get-Location
     try {

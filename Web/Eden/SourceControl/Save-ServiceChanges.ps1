@@ -4,5 +4,5 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenBuildInfo "Executing git add -A" $LoggingPrefix
+    Write-EdenInfo "Executing git add -A" $LoggingPrefix
     git add -A
