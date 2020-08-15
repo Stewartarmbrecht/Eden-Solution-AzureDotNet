@@ -1,20 +1,22 @@
 <?xml version="1.0"?>
-<testsuite name="Edge 84.0.522.52 (Windows 10)" package="" timestamp="2020-08-07T08:58:41" id="0" hostname="codespaces_0c9ab1" tests="9" errors="0" failures="0" time="0.365">
+<testsuite name="Chrome Headless 84.0.4147.105 (Linux x86_64)" package="" timestamp="2020-08-15T11:29:59" id="0" hostname="codespaces_0c9ab1" tests="9" errors="0" failures="0" time="0.196">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 Edg/84.0.522.52"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/84.0.4147.105 Safari/537.36"/>
   </properties>
-  <testcase name="MessageService should be created" time="0.032" classname="MessageService"/>
-  <testcase name="AppComponent should have as title 'MyEdenSolution'" time="0.168" classname="AppComponent"/>
-  <testcase name="AppComponent should render title" time="0.031" classname="AppComponent"/>
-  <testcase name="AppComponent should create the app" time="0.032" classname="AppComponent"/>
-  <testcase name="HeroService should be created" time="0.007" classname="HeroService"/>
-  <testcase name="MessagesComponent should create" time="0.025" classname="MessagesComponent"/>
-  <testcase name="HeroDetailComponent should create" time="0.027" classname="HeroDetailComponent"/>
-  <testcase name="HeroesComponent should create" time="0.023" classname="HeroesComponent"/>
-  <testcase name="DashboardComponent should create" time="0.02" classname="DashboardComponent"/>
+  <testcase name="MessageService should be created" time="0.009" classname="MessageService"/>
+  <testcase name="MessagesComponent should create" time="0.029" classname="MessagesComponent"/>
+  <testcase name="HeroService should be created" time="0.002" classname="HeroService"/>
+  <testcase name="DashboardComponent should create" time="0.013" classname="DashboardComponent"/>
+  <testcase name="HeroesComponent should create" time="0.015" classname="HeroesComponent"/>
+  <testcase name="AppComponent should render title" time="0.091" classname="AppComponent"/>
+  <testcase name="AppComponent should create the app" time="0.013" classname="AppComponent"/>
+  <testcase name="AppComponent should have as title 'MyEdenSolution'" time="0.013" classname="AppComponent"/>
+  <testcase name="HeroDetailComponent should create" time="0.011" classname="HeroDetailComponent"/>
   <system-out>
-    <![CDATA[Edge 84.0.522.52 (Windows 10) ERROR
-  DisconnectedClient disconnected from CONNECTED state (transport error)
+    <![CDATA[Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
+,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
+,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
+,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
 ,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
 ,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
 ,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
@@ -34,33 +36,6 @@
 ,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: ''app-messages' is not a known element:
 1. If 'app-messages' is an Angular component, then verify that it is part of this module.
 2. If 'app-messages' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.'
-,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Chrome Headless 84.0.4147.105 (Linux x86_64) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: ''app-messages' is not a known element:
-1. If 'app-messages' is an Angular component, then verify that it is part of this module.
-2. If 'app-messages' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.'
-,Edge 84.0.522.52 (Windows 10) ERROR: ''app-messages' is not a known element:
-1. If 'app-messages' is an Angular component, then verify that it is part of this module.
-2. If 'app-messages' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.'
-,Edge 84.0.522.52 (Windows 10) ERROR: ''app-messages' is not a known element:
-1. If 'app-messages' is an Angular component, then verify that it is part of this module.
-2. If 'app-messages' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
-,Edge 84.0.522.52 (Windows 10) ERROR: 'Can't bind to 'routerLink' since it isn't a known property of 'a'.'
 
 ]]>
   </system-out>

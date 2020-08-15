@@ -1,5 +1,6 @@
 [CmdletBinding()]
 param(
+    $Settings,
     [String] $LoggingPrefix
 )
 
