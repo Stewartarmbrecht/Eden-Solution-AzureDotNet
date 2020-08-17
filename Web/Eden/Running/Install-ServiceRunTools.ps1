@@ -4,4 +4,4 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenInfo "You already have everything you need. ;)" $LoggingPrefix
+Write-EdenError "Need to update to install ngrok instead of using source control to store executable file." $LoggingPrefix
