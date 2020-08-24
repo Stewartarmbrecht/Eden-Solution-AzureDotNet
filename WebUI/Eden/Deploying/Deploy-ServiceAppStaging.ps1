@@ -53,7 +53,7 @@ Get-ChildItem -Path $distrFolder | Set-AzStorageblobcontent `
         -Container `$web `
         -Context $ctx `
         -Force `
-        -Properties @{ ContentType = "text/html; charset=utf-8";}
+        -Properties @{ ContentType = "text/html; charset=utf-8";} | Write-Verbose
 Write-EdenInfo "Finished uploading the published application to the static website '$accountName'." $LoggingPrefix
 
 Write-EdenInfo "Access the application at '$($storageAccount.PrimaryEndpoints.Web)'." $LoggingPrefix

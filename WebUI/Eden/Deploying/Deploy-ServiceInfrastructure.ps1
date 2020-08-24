@@ -9,13 +9,13 @@ param(
 
     Write-EdenInfo "Connecting to azure tenant using the following configuration:" $loggingPrefix
 
-    Write-EdenInfo "SolutionName       : $($Settings.SolutionName)" $LoggingPrefix
-    Write-EdenInfo "ServiceName        : $($Settings.ServiceName)" $LoggingPrefix
-    Write-EdenInfo "EnvironmentName    : $($Settings.EnvironmentName)" $LoggingPrefix
-    Write-EdenInfo "Region             : $($Settings.Region)" $LoggingPrefix
-    Write-EdenInfo "ServicePrincipalId : $($Settings.ServicePrincipalId)" $LoggingPrefix
-    Write-EdenInfo "TenantId           : $($Settings.TenantId)" $LoggingPrefix
-    Write-EdenInfo "DeveloperId        : $($Settings.DeveloperId)" $LoggingPrefix
+    Write-Verbose "SolutionName       : $($Settings.SolutionName)"
+    Write-Verbose "ServiceName        : $($Settings.ServiceName)"
+    Write-Verbose "EnvironmentName    : $($Settings.EnvironmentName)"
+    Write-Verbose "Region             : $($Settings.Region)"
+    Write-Verbose "ServicePrincipalId : $($Settings.ServicePrincipalId)"
+    Write-Verbose "TenantId           : $($Settings.TenantId)"
+    Write-Verbose "DeveloperId        : $($Settings.DeveloperId)"
 
     $pscredential = New-Object System.Management.Automation.PSCredential($Settings.ServicePrincipalId, (ConvertTo-SecureString $Settings.ServicePrincipalPassword))
     Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $Settings.TenantId | Write-Verbose
