@@ -5,7 +5,7 @@ param(
 )
 
     Write-EdenInfo "Testing the Angular application." $LoggingPrefix
-    Set-Location "./Service"
+    Set-Location "./App"
     $verbosity = $VerbosePreference
     $VerbosePreference = "Continue"
     ng test --code-coverage --watch=false | Write-Verbose

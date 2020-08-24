@@ -1,5 +1,11 @@
 {
     "SolutionName": "MyEdenSolution",
     "ServiceName": "MyEdenService",
-    "PublicUrlToLocalWebServer": "http://localhost:4000"
+    "PublicUrlToLocalWebServer": "http://localhost:4000",
+    "EnvironmentName":"Prompt",
+    "Region":"centralus",
+    "ServicePrincipalId":"Prompt",
+    "ServicePrincipalPassword":"SecurePrompt",
+    "TenantId":"Prompt",
+    "DeveloperId":"Prompt"
 }

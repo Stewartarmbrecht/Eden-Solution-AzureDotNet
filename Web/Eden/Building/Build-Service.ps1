@@ -5,6 +5,6 @@ param(
 )
 
     Write-EdenInfo "Building the Angular application." $LoggingPrefix
-    Set-Location "./Service"
+    Set-Location "./App"
     ng build
     Write-EdenInfo "Finished building the Angular application." $LoggingPrefix

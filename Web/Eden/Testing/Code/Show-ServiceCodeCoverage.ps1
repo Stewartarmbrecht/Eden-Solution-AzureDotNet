@@ -4,11 +4,11 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenInfo "Launching a browser to load the code coverage report at './Service/testresults/coverage/index.html'." $LoggingPrefix
+    Write-EdenInfo "Launching a browser to load the code coverage report at './App/testresults/coverage/index.html'." $LoggingPrefix
 
     Write-Host "" -ForegroundColor Blue
     Write-Host "Click: http://localhost:8089/index.html" -ForegroundColor Blue
     Write-Host "" -ForegroundColor Blue
-    Set-Location "./Service/testresults/coverage/"
+    Set-Location "./App/testresults/coverage/"
     live-server --port=8089
 

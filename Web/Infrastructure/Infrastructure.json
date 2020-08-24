@@ -1,0 +1,328 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "EnvironmentName": {
+            "type": "string",
+            "metadata": {
+                "description": "Provides a unique string that will be pre-pended to all resource names and will ensure that they are globally unique."
+            }
+        }
+    },
+    "variables": {
+        "staticWebSiteStorageAccountName": "[concat(parameters('EnvironmentName'),'webuisa')]",
+        "serviceInstanceName": "[concat(parameters('EnvironmentName'),'-webuiproxy')]",
+
+        "applicationInsightsName": "[concat(variables('serviceInstanceName'), '-ai')]",
+
+        "functionsAppServicePlanName": "[concat(variables('serviceInstanceName'),'-asp')]",
+        "functionsAppName": "[variables('serviceInstanceName')]",
+        "storageAccountName": "[concat(parameters('EnvironmentName'),'proxywjs')]"
+    },
+    "resources": [
+        {   "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'),'a')]",
+            "comments": "One of 2 storage accounts, 'A', used to host the web application.",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'a/default')]",
+            "comments": "Blob service for the 'A' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'a'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'a/default')]",
+            "comments": "File service for the 'A' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'a'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'a/default/$web')]",
+            "comments": "Container in the 'A' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', concat(variables('staticWebSiteStorageAccountName'), 'a'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'a'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'),'b')]",
+            "comments": "One of 2 storage accounts, 'b', used to host the web application.",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'b/default')]",
+            "comments": "Blob service for the 'b' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'b'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'b/default')]",
+            "comments": "File service for the 'b' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'b'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {   "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('staticWebSiteStorageAccountName'), 'b/default/$web')]",
+            "comments": "Container in the '' storage account used to host the web application.",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', concat(variables('staticWebSiteStorageAccountName'),'b'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('staticWebSiteStorageAccountName'),'b'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        { "type": "Microsoft.Insights/components",
+            "name": "[variables('applicationInsightsName')]",
+            "comments": "The application insights instance to use to monitor all resources in the resource group.",
+            "apiVersion": "2014-04-01",
+            "location": "[resourceGroup().location]",
+            "kind": "other",
+            "properties": {
+                "applicationId": "[variables('applicationInsightsName')]"
+            }
+        },
+        { "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "comments": "The storage account to use for the azure function app settings.",
+            "apiVersion": "2019-04-01",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        },
+        { "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('functionsAppServicePlanName')]",
+            "comments": "The consumption based app service plan for the azure function app settings.",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-09-01",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        { "type": "Microsoft.Web/sites",
+            "name": "[variables('functionsAppName')]",
+            "comments": "The function app that is a proxy for the static web site.",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2018-11-01",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]",
+                "reserved": false
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "name": "appsettings",
+                    "comments": "Contains the app settings for the function app.",
+                    "type": "config",
+                    "apiVersion": "2018-11-01",
+                    "properties": {
+                        "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING":  "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "WEBSITE_CONTENTSHARE":  "[variables('functionsAppName')]",
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey)]",
+                        "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
+                        "ROUTING_EXTENSION_VERSION": "~0.2",
+                        "WebAppUrlA": "[reference(concat(variables('staticWebSiteStorageAccountName'),'a'), '2019-04-01').primaryEndpoints.web]",
+                        "WebAppUrlB": "[reference(concat(variables('staticWebSiteStorageAccountName'),'b'), '2019-04-01').primaryEndpoints.web]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]"
+                    ]
+                },
+                {
+                    "apiVersion": "2018-11-01",
+                    "name": "slotConfigNames",
+                    "comments": "Contains the staging slot for the function app.",
+                    "type": "config",
+                    "dependsOn": [
+                      "[resourceId('Microsoft.Web/Sites', variables('functionsAppName'))]"
+                    ],
+                    "properties": {
+                      "appSettingNames": [ 
+                          "WebAppUrlA",
+                          "WebAppUrlB",
+                          "APPINSIGHTS_INSTRUMENTATIONKEY" 
+                        ]
+                    }
+                }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]"
+            ]
+        },
+        { "type": "Microsoft.Web/sites/slots",
+            "name": "[concat(variables('functionsAppName'), '/staging')]",
+            "comments": "The staging slot for the function app.",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]",
+                "reserved": false
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "name": "appsettings",
+                    "comments": "The application settings for the staging slot function app.",
+                    "type": "config",
+                    "apiVersion": "2018-11-01",
+                    "properties": {
+                        "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING":  "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
+                        "WEBSITE_CONTENTSHARE":  "[concat(variables('functionsAppName'), 'staging')]",
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey)]",
+                        "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
+                        "ROUTING_EXTENSION_VERSION": "~0.2",
+                        "WebAppUrlA": "[reference(concat(variables('staticWebSiteStorageAccountName'),'a'), '2019-04-01').primaryEndpoints.web]",
+                        "WebAppUrlB": "[reference(concat(variables('staticWebSiteStorageAccountName'),'b'), '2019-04-01').primaryEndpoints.web]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]",
+                        "[resourceId('Microsoft.Web/sites/slots', variables('functionsAppName'), 'staging')]"
+                    ]
+                }
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('functionsAppName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('functionsAppServicePlanName'))]"
+            ]
+        }
+    ]
+}
