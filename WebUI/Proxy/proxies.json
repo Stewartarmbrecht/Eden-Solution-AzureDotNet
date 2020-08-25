@@ -15,7 +15,7 @@
                 "response.headers.X-Content-Type-Options": "nosniff",
                 "response.headers.X-XSS-Protection": "1; mode=block",
                 "response.headers.x-frame-options": "SAMEORIGIN",
-                "response.headers.Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
+                "response.headers.Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;",
                 "response.headers.Referrer-Policy": "same-origin",
                 "response.headers.Feature-Policy": "payment 'self'; geolocation 'self'"
             }
@@ -44,7 +44,7 @@
                 "response.headers.X-Content-Type-Options": "nosniff",
                 "response.headers.X-XSS-Protection": "1; mode=block",
                 "response.headers.x-frame-options": "SAMEORIGIN",
-                "response.headers.Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
+                "response.headers.Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;",
                 "response.headers.Referrer-Policy": "same-origin",
                 "response.headers.Feature-Policy": "payment 'self'; geolocation 'self'"
             }
