@@ -3,9 +3,12 @@ import { browser, logging } from 'protractor';
 
 describe('workspace-project App', () => {
   let page: AppPage;
+  var originalTimeout;
 
   beforeEach(() => {
     page = new AppPage();
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 90000;
   });
 
   it('should display welcome message', () => {
@@ -19,5 +22,6 @@ describe('workspace-project App', () => {
     expect(logs).not.toContain(jasmine.objectContaining({
       level: logging.Level.SEVERE,
     } as logging.Entry));
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 });
