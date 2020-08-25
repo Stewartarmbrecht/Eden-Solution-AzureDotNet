@@ -4,11 +4,11 @@ param(
     [String] $LoggingPrefix
 )
 
-    Write-EdenInfo "Testing the Angular application." $LoggingPrefix
+    Write-EdenInfo "Testing the Angular application at 'https://$($Settings.EnvironmentName)-webuiproxy-staging.azurewebsites.net/'." $LoggingPrefix
     Set-Location "./App"
     if ($VerbosePreference -eq "SilentlyContinue") {
-        npm run e2e | Write-Verbose
+        ng e2e --dev-server-target="" --base-url="https://$($Settings.EnvironmentName)-webuiproxy-staging.azurewebsites.net/" | Write-Verbose
     } else {
-        npm run e2e
+        ng e2e --dev-server-target="" --base-url="https://$($Settings.EnvironmentName)-webuiproxy-staging.azurewebsites.net/"
     }
-    Write-EdenInfo "Finished testing the Angular application." $LoggingPrefix
+    Write-EdenInfo "Finished testing the Angular application at 'https://$($Settings.EnvironmentName)-webuiproxy-staging.azurewebsites.net/'." $LoggingPrefix
