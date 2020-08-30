@@ -248,9 +248,9 @@
                     "apiVersion": "2018-11-01",
                     "properties": {
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "WEBSITE_RUN_FROM_PACKAGE": "1",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING":  "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
-                        "WEBSITE_CONTENTSHARE":  "[variables('functionsAppName')]",
                         "APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey)]",
                         "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
                         "ROUTING_EXTENSION_VERSION": "~0.2",
@@ -304,9 +304,9 @@
                     "apiVersion": "2018-11-01",
                     "properties": {
                         "FUNCTIONS_EXTENSION_VERSION": "~3",
+                        "WEBSITE_RUN_FROM_PACKAGE": "1",
                         "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
                         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING":  "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]",
-                        "WEBSITE_CONTENTSHARE":  "[concat(variables('functionsAppName'), 'staging')]",
                         "APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey)]",
                         "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
                         "ROUTING_EXTENSION_VERSION": "~0.2",
