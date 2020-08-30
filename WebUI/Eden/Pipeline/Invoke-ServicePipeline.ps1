@@ -9,5 +9,6 @@ param(
     Test-EdenServiceCode -SettingsName $Settings.Name
     Test-EdenServiceFeatures -SettingsName $Settings.Name
     Publish-EdenService -SettingsName $Settings.Name
-    Deploy-EdenService -SettingsName $Settings.Name
+    Deploy-EdenServiceInfrastruction -SettingsName $Settings.Name
+    Deploy-EdenServiceApplication -SettingsName $Settings.Name
     Write-EdenInfo "Finished performing some action." $LoggingPrefix
