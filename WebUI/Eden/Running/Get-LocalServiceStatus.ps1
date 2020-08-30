@@ -1,11 +1,12 @@
 [CmdletBinding()]
 param(
     $Settings,
-    [String] $LoggingPrefix
+    [String] $LoggingPrefix,
+    [String] $Url
 )
 try {
-    Write-EdenInfo "Calling service health check at 'http://localhost:4000/'." $LoggingPrefix
-    $response = Invoke-WebRequest -URI "http://localhost:4000/"
+    Write-EdenInfo "Calling service health check at '$Url'." $LoggingPrefix
+    $response = Invoke-WebRequest -URI $Url
     $status = $response.StatusCode -eq 200
     if($status) {
         Write-EdenInfo "Health check status successful." $LoggingPrefix
@@ -16,6 +17,6 @@ try {
     }
 } catch {
     $message = $_.Exception.Message
-    Write-EdenError "Failed to get health check status: '$message'." $LoggingPrefix
+    Write-EdenInfo "Failed to get health check status: '$message'." $LoggingPrefix
     return $FALSE
 }
