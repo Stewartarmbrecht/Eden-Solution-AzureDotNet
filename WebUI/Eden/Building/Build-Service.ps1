@@ -11,4 +11,7 @@ param(
     } else {
         ng build
     }
+    if($LASTEXITCODE -ne 0) {
+        throw "Build failed. See output for error information."
+    }
     Write-EdenInfo "Finished building the Angular application." $LoggingPrefix
